@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
+    <title>Circle Example</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="700" height="700"></canvas>
+
+    <script>
+        // Get the canvas element
+        var canvas = document.getElementById("myCanvas");
+
+        // Get the 2D rendering context
+        var ctx = canvas.getContext("2d");
+
+        // Load background image
+        var backgroundImage = new Image();
+        backgroundImage.src = 'diskTemp.png'; // Replace with the path to your image
+        backgroundImage.onload = function () {
+            // Calculate coordinates to center the image
+            var imgX = (canvas.width - backgroundImage.width) / 2;
+            var imgY = (canvas.height - backgroundImage.height) / 2;
+
+            // Draw the background image centered on the canvas
+            ctx.drawImage(backgroundImage, imgX, imgY);
+
+            // Set the center and radius of the circle
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var radius = 235;
+
+            // Draw the circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'transparent'; // Set the fill color
+            ctx.fill();
+            ctx.lineWidth = 3; // Set the border width
+            ctx.strokeStyle = 'black'; // Set the border color
+            ctx.stroke();
+            ctx.closePath();
+
+            // Array of text and positions
+            var textArray = [
+                { text: 'LISENSIESKYF', x: centerX, y: centerY - 225, fontSize: '20px', bold: true },
+                { text: 'RSA', x: centerX, y: centerY - 190 },
+
+                { text: 'NO. ', x: centerX - 115, y: centerY - 165 },
+                { text: 'NR.', x: centerX + 115, y: centerY - 165 },
+
+                { text: 'License no.', x: centerX - 143, y: centerY - 140 },
+                { text: 'Lisensienr.', x: centerX - 145, y: centerY - 125 },
+
+                { text: 'Veh. registrer no.', x: centerX + 33, y: centerY - 140 },
+                { text: 'Vrt.registernr.', x: centerX + 20, y: centerY - 125 },
+
+                { text: 'VIN', x: centerX - 170, y: centerY - 100 },
+                { text: 'Fees/Gelde', x: centerX + 107, y: centerY - 100 },
+
+                { text: 'Engine no./Enginnr.', x: centerX - 70, y: centerY - 80 },
+                { text: 'GVM/BVM', x: centerX + 70, y: centerY - 80 },
+                { text: 'Tare/Tarra', x: centerX, y: centerY - 160 },
+
+                { text: 'Make', x: centerX, y: centerY - 160 },
+                { text: 'Description', x: centerX, y: centerY - 160 },
+
+                { text: 'Fabrikaat', x: centerX, y: centerY - 160 },
+                { text: 'Beskywing', x: centerX, y: centerY - 160 },
+                // Add more text and positions as needed
+            ];
+
+            // Add text inside the circle
+            ctx.font = '16px Arial';
+            ctx.fillStyle = 'black';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            textArray.forEach(function (item) {
+                ctx.fillText(item.text, item.x, item.y);
+            });
+
+            // Draw barcode
+            var barcodeValue = "123456789"; // Replace with your barcode value
+            JsBarcode(canvas, barcodeValue, {
+                format: "CODE128",
+                width: 2,
+                height: 50,
+                displayValue: false
+            });
+        };
+    </script>
+</body>
+</html>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    canvas {
+    }
+</style>
