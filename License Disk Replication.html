@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
+
     <title>Circle Example</title>
 </head>
 <body>
@@ -42,54 +42,74 @@
             ctx.stroke();
             ctx.closePath();
 
+            //Draw the image inside the circle
+            var imageUrl = 'Barcode.jpg';
+            var logoImage = new Image();
+            logoImage.src = imageUrl;
+            logoImage.onload = function () {
+                var imageWidth = 320; // Adjust the image width as needed
+                var imageHeight = 84; // Adjust the image height as needed
+                
+                var destinationX = centerX - imageWidth / 2 - 18;
+                var destinationY = centerY - imageHeight / 2 + 37; 
+
+                ctx.drawImage(logoImage, destinationX, destinationY, imageWidth, imageHeight);
+
             // Array of text and positions
             var textArray = [
                 { text: 'LISENSIESKYF', x: centerX, y: centerY - 225, fontSize: '20px', bold: true },
-                { text: 'RSA', x: centerX, y: centerY - 190 },
+                { text: 'RSA', x: centerX, y: centerY - 185, fontSize: '30px', bold: true },
 
-                { text: 'NO. ', x: centerX - 115, y: centerY - 165 },
-                { text: 'NR.', x: centerX + 115, y: centerY - 165 },
+                { text: 'NO. ', x: centerX - 110, y: centerY - 150, fontSize: '20px', bold: false },
+                { text: 'NR.', x: centerX + 110, y: centerY - 150, fontSize: '20px', bold: false },
 
-                { text: 'License no.', x: centerX - 143, y: centerY - 140 },
-                { text: 'Lisensienr.', x: centerX - 145, y: centerY - 125 },
+                { text: 'License no.', x: centerX - 125, y: centerY - 127, fontSize: '15px', bold: false },
+                { text: 'Lisensienr.', x: centerX - 125, y: centerY - 115, fontSize: '15px', bold: false },
 
-                { text: 'Veh. registrer no.', x: centerX + 33, y: centerY - 140 },
-                { text: 'Vrt.registernr.', x: centerX + 20, y: centerY - 125 },
+                { text: 'Veh. registrer no.', x: centerX + 60, y: centerY - 125, fontSize: '14px', bold: false },
+                { text: 'Vrt.registernr.', x: centerX + 50, y: centerY - 114, fontSize: '15px', bold: false },
 
-                { text: 'VIN', x: centerX - 170, y: centerY - 100 },
-                { text: 'Fees/Gelde', x: centerX + 107, y: centerY - 100 },
+                { text: 'VIN', x: centerX - 170, y: centerY - 91, fontSize: '14px', bold: false },
+                { text: 'Fees/Gelde', x: centerX + 116, y: centerY - 87, fontSize: '12px', bold: false },
 
-                { text: 'Engine no./Enginnr.', x: centerX - 70, y: centerY - 80 },
-                { text: 'GVM/BVM', x: centerX + 70, y: centerY - 80 },
-                { text: 'Tare/Tarra', x: centerX, y: centerY - 160 },
+                { text: 'Engine no./Enginnr.', x: centerX - 84, y: centerY - 70, fontSize: '14px', bold: false },
+                { text: 'GVM/BVM', x: centerX + 88, y: centerY - 69, fontSize: '14px', bold: false },
+                { text: 'Tare/Tarra', x: centerX + 114, y: centerY - 50, fontSize: '14px', bold: false },
 
-                { text: 'Make', x: centerX, y: centerY - 160 },
-                { text: 'Description', x: centerX, y: centerY - 160 },
+                { text: 'Make', x: centerX - 161, y: centerY - 30, fontSize: '14px', bold: false },
+                { text: 'Description', x: centerX - 176 , y: centerY - 10, fontSize: '14px', bold: false },
 
-                { text: 'Fabrikaat', x: centerX, y: centerY - 160 },
-                { text: 'Beskywing', x: centerX, y: centerY - 160 },
+                { text: 'Fabrikaat', x: centerX + 185, y: centerY - 30, fontSize: '12px', bold: false },
+                { text: 'Beskywing', x: centerX + 190, y: centerY - 12, fontSize: '12px', bold: false },
+
+                { text: 'Date of test', x: centerX - 97, y: centerY + 106, fontSize: '14px', bold: false },
+                { text: 'Datum van toets', x: centerX + 108, y: centerY + 102, fontSize: '13px', bold: false },
+
+                { text: 'Persons:', x: centerX - 89, y: centerY + 125, fontSize: '13px', bold: false },
+                { text: 'Persone:', x: centerX - 89, y: centerY + 139, fontSize: '13px', bold: false },
+
+                { text: 'Seated', x: centerX + 31, y: centerY + 120, fontSize: '13px', bold: false },
+                { text: 'Sittende', x: centerX + 36, y: centerY + 134, fontSize: '13px', bold: false },
+
+                { text: 'Standing', x: centerX + 140, y: centerY + 119, fontSize: '13px', bold: false },
+                { text: 'Staande', x: centerX + 140, y: centerY + 130, fontSize: '13px', bold: false },
+
+                { text: 'Date of expiry/Vervaldatum', x: centerX + 15, y: centerY +155, fontSize: '14px', bold: false },
+
+                { text: 'LICENSE DISC', x: centerX, y: centerY  +225, fontSize: '20px', bold: true },
                 // Add more text and positions as needed
             ];
 
-            // Add text inside the circle
-            ctx.font = '16px Arial';
-            ctx.fillStyle = 'black';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
+            // Add text inside the circle          
             textArray.forEach(function (item) {
+                ctx.font = (item.bold ? 'bold ' : '') + item.fontSize + ' Arial';
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
                 ctx.fillText(item.text, item.x, item.y);
             });
-
-            // Draw barcode
-            var barcodeValue = "123456789"; // Replace with your barcode value
-            JsBarcode(canvas, barcodeValue, {
-                format: "CODE128",
-                width: 2,
-                height: 50,
-                displayValue: false
-            });
         };
+    };
     </script>
 </body>
 </html>
