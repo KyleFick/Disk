@@ -3,126 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Circle Example</title>
+    <title>Curved Text</title>
 </head>
 <body>
-    <canvas id="myCanvas" width="700" height="700"></canvas>
+    <canvas id="curvedTextCanvas" width="400" height="200"></canvas>
 
     <script>
-        // Get the canvas element
-        var canvas = document.getElementById("myCanvas");
+        // Function to draw curved text on canvas
+        function drawCurvedText(text, centerX, centerY, radius, startAngle, endAngle) {
+            var canvas = document.getElementById("curvedTextCanvas");
+            var context = canvas.getContext("2d");
 
-        // Get the 2D rendering context
-        var ctx = canvas.getContext("2d");
+            // Convert angles to radians
+            startAngle = startAngle * (Math.PI / 180);
+            endAngle = endAngle * (Math.PI / 180);
 
-        // Load background image
-        var backgroundImage = new Image();
-        backgroundImage.src = 'diskTemp.png'; // Replace with the path to your image
-        backgroundImage.onload = function () {
-            // Calculate coordinates to center the image
-            var imgX = (canvas.width - backgroundImage.width) / 2;
-            var imgY = (canvas.height - backgroundImage.height) / 2;
+            // Calculate the angle step
+            var angleStep = (endAngle - startAngle) / text.length;
 
-            // Draw the background image centered on the canvas
-            ctx.drawImage(backgroundImage, imgX, imgY);
+            // Set the font style
+            context.font = "16px Arial";
 
-            // Set the center and radius of the circle
-            var centerX = canvas.width / 2;
-            var centerY = canvas.height / 2;
-            var radius = 235;
+            // Draw the curved text
+            for (var i = 0; i < text.length; i++) {
+                var angle = startAngle + i * angleStep;
+                var x = centerX + radius * Math.cos(angle);
+                var y = centerY + radius * Math.sin(angle);
 
-            // Draw the circle
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'transparent'; // Set the fill color
-            ctx.fill();
-            ctx.lineWidth = 3; // Set the border width
-            ctx.strokeStyle = 'black'; // Set the border color
-            ctx.stroke();
-            ctx.closePath();
+                context.save();
+                context.translate(x, y);
+                context.rotate(angle + Math.PI / 2); // Adjust rotation as needed
+                context.fillText(text[i], 0, 0);
+                context.restore();
+            }
+        }
 
-            //Draw the image inside the circle
-            var imageUrl = 'Barcode.jpg';
-            var logoImage = new Image();
-            logoImage.src = imageUrl;
-            logoImage.onload = function () {
-                var imageWidth = 320; // Adjust the image width as needed
-                var imageHeight = 84; // Adjust the image height as needed
-                
-                var destinationX = centerX - imageWidth / 2 - 18;
-                var destinationY = centerY - imageHeight / 2 + 37; 
-
-                ctx.drawImage(logoImage, destinationX, destinationY, imageWidth, imageHeight);
-
-            // Array of text and positions
-            var textArray = [
-                { text: 'LISENSIESKYF', x: centerX, y: centerY - 225, fontSize: '20px', bold: true },
-                { text: 'RSA', x: centerX, y: centerY - 185, fontSize: '30px', bold: true },
-
-                { text: 'NO. ', x: centerX - 110, y: centerY - 150, fontSize: '20px', bold: false },
-                { text: 'NR.', x: centerX + 110, y: centerY - 150, fontSize: '20px', bold: false },
-
-                { text: 'License no.', x: centerX - 125, y: centerY - 127, fontSize: '15px', bold: false },
-                { text: 'Lisensienr.', x: centerX - 125, y: centerY - 115, fontSize: '15px', bold: false },
-
-                { text: 'Veh. registrer no.', x: centerX + 60, y: centerY - 125, fontSize: '14px', bold: false },
-                { text: 'Vrt.registernr.', x: centerX + 50, y: centerY - 114, fontSize: '15px', bold: false },
-
-                { text: 'VIN', x: centerX - 170, y: centerY - 91, fontSize: '14px', bold: false },
-                { text: 'Fees/Gelde', x: centerX + 116, y: centerY - 87, fontSize: '12px', bold: false },
-
-                { text: 'Engine no./Enginnr.', x: centerX - 84, y: centerY - 70, fontSize: '14px', bold: false },
-                { text: 'GVM/BVM', x: centerX + 88, y: centerY - 69, fontSize: '14px', bold: false },
-                { text: 'Tare/Tarra', x: centerX + 114, y: centerY - 50, fontSize: '14px', bold: false },
-
-                { text: 'Make', x: centerX - 161, y: centerY - 30, fontSize: '14px', bold: false },
-                { text: 'Description', x: centerX - 176 , y: centerY - 10, fontSize: '14px', bold: false },
-
-                { text: 'Fabrikaat', x: centerX + 185, y: centerY - 30, fontSize: '12px', bold: false },
-                { text: 'Beskywing', x: centerX + 190, y: centerY - 12, fontSize: '12px', bold: false },
-
-                { text: 'Date of test', x: centerX - 97, y: centerY + 106, fontSize: '14px', bold: false },
-                { text: 'Datum van toets', x: centerX + 108, y: centerY + 102, fontSize: '13px', bold: false },
-
-                { text: 'Persons:', x: centerX - 89, y: centerY + 125, fontSize: '13px', bold: false },
-                { text: 'Persone:', x: centerX - 89, y: centerY + 139, fontSize: '13px', bold: false },
-
-                { text: 'Seated', x: centerX + 31, y: centerY + 120, fontSize: '13px', bold: false },
-                { text: 'Sittende', x: centerX + 36, y: centerY + 134, fontSize: '13px', bold: false },
-
-                { text: 'Standing', x: centerX + 140, y: centerY + 119, fontSize: '13px', bold: false },
-                { text: 'Staande', x: centerX + 140, y: centerY + 130, fontSize: '13px', bold: false },
-
-                { text: 'Date of expiry/Vervaldatum', x: centerX + 15, y: centerY +155, fontSize: '14px', bold: false },
-
-                { text: 'LICENSE DISC', x: centerX, y: centerY  +225, fontSize: '20px', bold: true },
-                // Add more text and positions as needed
-            ];
-
-            // Add text inside the circle          
-            textArray.forEach(function (item) {
-                ctx.font = (item.bold ? 'bold ' : '') + item.fontSize + ' Arial';
-                ctx.fillStyle = 'black';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(item.text, item.x, item.y);
-            });
-        };
-    };
+        // Call the function with the desired parameters
+        drawCurvedText("Hello, World!", 200, 100, 80, -45, 45);
     </script>
 </body>
 </html>
-
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-
-    canvas {
-    }
-</style>
